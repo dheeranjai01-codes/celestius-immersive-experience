@@ -1,0 +1,297 @@
+.bt {
+    --ph: #8dffa6;
+    --glow: #39ff5abf;
+    --glow2: #39ff5a47;
+    color: var(--ph);
+    pointer-events: auto;
+    cursor: pointer;
+    background: #010201;
+    font-family: VT323, ui-monospace, monospace;
+    transition: opacity .2s linear .12s;
+    position: absolute;
+    inset: 0;
+    overflow: hidden
+}
+
+.bt.is-loading,
+.bt.is-loading .bt__go {
+    cursor: wait
+}
+
+.bt[data-state=off] {
+    display: none
+}
+
+.bt[data-state=enter] {
+    opacity: 0;
+    pointer-events: none
+}
+
+.bt__screen {
+    left: var(--stage-left);
+    top: var(--stage-top);
+    width: var(--stage-w);
+    height: var(--stage-h);
+    transform-origin: 50%;
+    text-shadow: 0 0 calc(4 * var(--u)) var(--glow), 0 0 calc(22 * var(--u)) var(--glow2);
+    transition: transform .1s cubic-bezier(.7, 0, .84, 0), filter .1s linear;
+    animation: .18s ease-out both bt-warm;
+    position: absolute
+}
+
+.bt[data-state=enter] .bt__screen {
+    filter: brightness(3.2);
+    transform: scale(.94, .004)
+}
+
+.bt.is-key .bt__screen {
+    animation: .18s ease-out both bt-warm, 90ms ease-out bt-key
+}
+
+@keyframes bt-warm {
+    0% {
+        filter: brightness(2.2)blur(1px);
+        opacity: 0
+    }
+    to {
+        filter: none;
+        opacity: 1
+    }
+}
+
+@keyframes bt-key {
+    0% {
+        filter: brightness(1.35)
+    }
+    to {
+        filter: brightness()
+    }
+}
+
+.bt__status {
+    left: calc(150 * var(--u));
+    top: calc(118 * var(--u));
+    font-size: calc(34 * var(--u));
+    line-height: 1.12;
+    position: absolute
+}
+
+.bt__status p {
+    visibility: hidden;
+    white-space: pre;
+    opacity: .45;
+    margin: 0
+}
+
+.bt__status p.is-on {
+    visibility: visible
+}
+
+.bt__log p.is-run {
+    opacity: .7
+}
+
+.bt__log p.is-err {
+    opacity: .9
+}
+
+.bt__cmd {
+    text-align: center;
+    font-size: calc(148 * var(--u));
+    white-space: pre;
+    letter-spacing: 0;
+    margin: 0;
+    line-height: 1;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    transform: translateY(-58%)
+}
+
+.bt__tab.is-hl {
+    background: var(--ph);
+    color: #021204;
+    box-shadow: 0 0 calc(18 * var(--u)) var(--glow);
+    text-shadow: none
+}
+
+.bt__cursor {
+    vertical-align: -.06em;
+    background: var(--ph);
+    width: .45em;
+    height: .8em;
+    box-shadow: 0 0 calc(14 * var(--u)) var(--glow);
+    margin-left: .06em;
+    display: inline-block
+}
+
+.bt[data-state=ready] .bt__cursor {
+    animation: .6897s step-end infinite bt-blink
+}
+
+@keyframes bt-blink {
+    50% {
+        opacity: 0
+    }
+}
+
+.bt__foot {
+    left: calc(150 * var(--u));
+    right: calc(150 * var(--u));
+    bottom: calc(110 * var(--u));
+    font-size: calc(34 * var(--u));
+    opacity: 0;
+    justify-content: space-between;
+    display: flex;
+    position: absolute
+}
+
+.bt__foot p {
+    margin: 0
+}
+
+.bt.has-foot .bt__foot {
+    opacity: .32
+}
+
+.bt__glass {
+    pointer-events: none;
+    mix-blend-mode: normal;
+    background: radial-gradient(at 24% 16%, #bee6ff0d, #0000 45%), radial-gradient(#0000 55%, #000000b8 100%), repeating-linear-gradient(#00000057 0 1px, #0000 1px 3px);
+    position: absolute;
+    inset: 0
+}
+
+.bt__glass:after {
+    content: "";
+    background: linear-gradient(#0000, #78ff9609, #0000);
+    height: 18%;
+    animation: 3.2s linear infinite bt-hum;
+    position: absolute;
+    top: -20%;
+    left: 0;
+    right: 0
+}
+
+@keyframes bt-hum {
+    to {
+        transform: translateY(700%)
+    }
+}
+
+.bt__go {
+    left: 50%;
+    top: calc(var(--stage-top) + 700 * var(--u));
+    font-family: var(--jp);
+    font-weight: 700;
+    font-size: max(13px, calc(24 * var(--u)));
+    letter-spacing: .08em;
+    color: var(--ph);
+    text-shadow: 0 0 10px var(--glow2);
+    opacity: 0;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 16px;
+    transition: opacity .4s ease-out;
+    display: inline-flex;
+    position: absolute;
+    transform: translate(-50%)
+}
+
+.bt[data-state=ready] .bt__go {
+    opacity: 1;
+    animation: 1.3793s ease-in-out infinite bt-pulse
+}
+
+.bt__go:lang(en) {
+    letter-spacing: 0
+}
+
+.bt__go-key {
+    letter-spacing: 0;
+    border: 1.5px solid;
+    border-bottom-width: 3px;
+    border-radius: 4px;
+    padding: 0 .4em;
+    font-family: VT323, monospace;
+    font-size: 1.25em
+}
+
+@keyframes bt-pulse {
+    0%,
+    to {
+        opacity: 1
+    }
+    50% {
+        opacity: .55
+    }
+}
+
+.bt__go:focus-visible {
+    outline: 2px solid var(--ph);
+    outline-offset: 4px
+}
+
+@media (pointer:coarse) {
+    .bt__go-key {
+        display: none
+    }
+    .bt__go-label:before {
+        content: "タップ"
+    }
+    .bt__go-label:lang(en):before {
+        content: "Tap "
+    }
+}
+
+.bt.is-portrait .bt__status {
+    left: calc(80 * var(--u));
+    top: calc(200 * var(--u));
+    font-size: max(14px, calc(30 * var(--u)))
+}
+
+.bt.is-portrait .bt__status p {
+    white-space: normal;
+    max-width: calc(100vw - 80 * var(--u) - 16px)
+}
+
+.bt.is-portrait .bt__log p {
+    white-space: pre;
+    max-width: none
+}
+
+.bt.is-portrait .bt__cmd {
+    font-size: calc(118 * var(--u))
+}
+
+.bt.is-portrait .bt__foot {
+    left: calc(80 * var(--u));
+    right: calc(80 * var(--u));
+    bottom: calc(220 * var(--u));
+    font-size: calc(28 * var(--u))
+}
+
+.bt.is-portrait .bt__go {
+    top: calc(var(--stage-top) + 1130 * var(--u));
+    font-size: max(14px, calc(34 * var(--u)))
+}
+
+.bsr {
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    position: absolute;
+    overflow: hidden
+}
+
+@media (prefers-reduced-motion:reduce) {
+    .bt__screen,
+    .bt__glass:after,
+    .bt__go,
+    .bt[data-state=ready] .bt__cursor {
+        animation: none !important
+    }
+}
